@@ -35,4 +35,6 @@ It's worth noting that while the 8254 PIT has been a staple in older computer sy
 ## Ref
 - https://wiki.osdev.org/Programmable_Interval_Timer
 - https://en.wikipedia.org/wiki/Programmable_interval_timer
+- https://www.geeksforgeeks.org/8254-control-word-operating-modes/
+- https://www.geeksforgeeks.org/microprocessor-8254-programmable-interval-timer/
 - 

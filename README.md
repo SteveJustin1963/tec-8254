@@ -50,7 +50,31 @@ Note: This is assuming that I/O operations can be done using `!` for output and 
 
 After initializing the 8254 using `init-8254`, you'll also need to set up your interrupt service routine (ISR) and configure the interrupt controller (like the 8259 PIC) to accept the interrupt from the PIT. These parts are dependent on your CPU and system architecture, and thus are not covered in this example.
 
+## measure the duration of an I/O pin's state 
+(e.g., high or low) involves using one of its channels in "gate" mode. The gate input can start and stop the count based on an external signal. If you use the PIT's counter to count upward while the I/O pin is in a specific state, you can then read the counter value to determine the duration the pin remained in that state.
 
+Here's a general approach:
+
+1. **Configure the PIT**: Set up one of the PIT's channels (e.g., Channel 2) in a suitable mode that uses the gate input. Mode 5 (Hardware Triggered Strobe) can be suitable for this. The count will start when the gate input goes high.
+
+2. **Connect the I/O pin to the PIT's gate**: Ensure the I/O pin you want to measure is connected to the gate input of the channel you're using on the PIT.
+
+3. **Start the Measurement**: When you're ready to measure, initialize the PIT counter to its maximum value. Monitor the I/O pin, and when it goes high (or low, depending on your requirements), the PIT will start counting down.
+
+4. **Read the Value**: Once the I/O pin changes state again, read the value from the PIT counter. This value will give you a measure of the time duration the I/O pin remained in the initial state.
+
+Here's an illustrative Forth-83 code snippet for the 8254 setup:
+
+### dur-1.f
+
+Keep in mind:
+
+- Ensure the I/O pin you want to measure is connected to the gate input of the PIT channel you're using.
+- The example assumes Channel 2, but other channels can be used in a similar manner.
+- The exact method of waiting for the I/O pin to change state is not provided, as it's system-specific.
+- The PIT counts down, so the longer the duration, the smaller the value you read back. To find the elapsed counts, you can subtract the read-back value from the starting value.
+
+This method provides a way to measure durations longer than one PIT tick but shorter than the max count value. If the I/O duration might exceed the max count value, you'll need to handle wrap-around or choose a different measurement method.
 
 
 ## Ref

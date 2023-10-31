@@ -32,6 +32,27 @@ Here's a detailed overview of the 8254 PIT and its functionalities:
 
 It's worth noting that while the 8254 PIT has been a staple in older computer systems, modern systems often use newer timer mechanisms, such as the High Precision Event Timer (HPET) or platform-specific timers. However, understanding the 8254 PIT remains valuable for anyone working with legacy hardware or embedded systems.
 
+## generate an interrupt. 
+It is commonly used in PCs for various timing-related tasks, such as generating the system clock or providing a time delay. One of its channels (commonly Channel 0) can be set up to generate an interrupt signal, which then triggers the CPU's interrupt handling mechanism.
+
+To set up the 8254 PIT for generating interrupts, you'd typically go through these steps:
+
+1. Choose a channel (usually Channel 0 for system clock)
+2. Set the operating mode for that channel
+3. Load the initial count value to set the frequency
+4. Connect the output to the interrupt controller (like the 8259 PIC) if it is not directly connected.
+
+Here's a Forth-83 code snippet to set up the 8254 PIT to generate an interrupt. This example assumes that you're setting up Channel 0, the count value is loaded with 65535 (0xFFFF), and the operating mode is 2 (Rate Generator).
+
+Note: This is assuming that I/O operations can be done using `!` for output and `@` for input, and that these operations are byte-sized. A hypothetical `outb` and `inb` are used for byte-sized I/O to ports.
+
+### int-1.f
+
+After initializing the 8254 using `init-8254`, you'll also need to set up your interrupt service routine (ISR) and configure the interrupt controller (like the 8259 PIC) to accept the interrupt from the PIT. These parts are dependent on your CPU and system architecture, and thus are not covered in this example.
+
+
+
+
 ## Ref
 - https://wiki.osdev.org/Programmable_Interval_Timer
 - https://en.wikipedia.org/wiki/Programmable_interval_timer

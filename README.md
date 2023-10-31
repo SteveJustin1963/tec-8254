@@ -32,6 +32,32 @@ Here's a detailed overview of the 8254 PIT and its functionalities:
 
 It's worth noting that while the 8254 PIT has been a staple in older computer systems, modern systems often use newer timer mechanisms, such as the High Precision Event Timer (HPET) or platform-specific timers. However, understanding the 8254 PIT remains valuable for anyone working with legacy hardware or embedded systems.
 
+## measure interval period on I/O pin 04
+
+1. Initialize the 8254 chip:
+   - Set the appropriate control word to select Counter 0.
+   - Configure Counter 0 as a one-shot timer with a 16-bit binary count mode.
+
+2. Set up the clock source for Counter 0:
+   - Connect the clock input (CLK 0) to the external clock source or another appropriate clock signal.
+
+3. Configure the Gate input:
+   - Connect the Gate input (GATE 0) to I/O pin 04.
+
+4. Start the measurement:
+   - Enable Counter 0 by setting the appropriate control word.
+
+5. Wait for the measurement to complete:
+   - Monitor the status of the Counter 0 output (OUT 0).
+   - When OUT 0 goes high, the measurement has completed.
+
+6. Read the measurement result:
+   - Read the count value from Counter 0, which represents the interval period.
+ ### read-1.f
+
+This code initializes the 8254 chip, starts the measurement, waits for it to complete, and then reads and displays the measurement result. You'll need to connect the clock source and I/O pin 04 as specified in your hardware setup.
+
+
 ## generate an interrupt. 
 It is commonly used in PCs for various timing-related tasks, such as generating the system clock or providing a time delay. One of its channels (commonly Channel 0) can be set up to generate an interrupt signal, which then triggers the CPU's interrupt handling mechanism.
 

@@ -21,6 +21,42 @@ The 8254 PIT can be programmed to operate in various modes:
 - Producing periodic interrupts
 - Measuring the duration of an I/O pin’s state
 
+## Duration dur-1 mint
+- This setup is ideal for measuring the duration of events triggered by hardware signals, such as monitoring the state of an I/O pin.
+- The code sets up Counter 2 in hardware-triggered strobe mode.
+- It loads the maximum count value, preparing the counter to start counting when a hardware trigger is received.
+- It reads the current state of the counter, providing a full 16-bit value by combining the upper and lower bytes.
+
+#### Function `:M`
+- configures Counter 2 of the 8254 PIT to operate in Mode 5,
+- which is the hardware-triggered strobe mode.
+- In this mode, the counter begins counting down when a hardware signal (the gate input) is received,
+- and when it reaches zero, it generates a pulse on the output.
+- The control word specific to Mode 5 is sent to the PIT’s control register to configure this behavior for Counter 2.
+
+#### Function `:N`
+- sets the initial maximum count value for Counter 2.
+- The count value is split into two bytes:
+1. The lower byte is written to Counter 2’s data register first.
+2. The upper byte is then written to the same register after shifting it appropriately.
+- ensures that the full 16-bit count value is loaded correctly into Counter 2,
+- which determines the duration before the counter reaches zero and triggers the strobe.
+
+#### Function `:O`
+- initializes Counter 2 for the duration measurement process.
+- It does so by calling `:M` to set up Counter 2 with the hardware-triggered strobe configuration.
+- Afterward, it calls `:N` to set the counter’s maximum count value.
+- This setup prepares Counter 2 to begin counting down when it receives a signal.
+
+#### Function `:P`
+- reads the current count value from Counter 2.
+- It first retrieves the lower byte from the counter’s data register.
+- It then reads the upper byte, shifts it left by 8 bits to position it correctly,
+- and combines it with the lower byte.
+- This operation reconstructs the full 16-bit count value,
+- allowing you to know how much time remains until the counter reaches zero.
+
+## 
 
 
 ### References for Further Reading

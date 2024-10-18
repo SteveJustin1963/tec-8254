@@ -21,7 +21,7 @@ The 8254 PIT can be programmed to operate in various modes:
 - Producing periodic interrupts
 - Measuring the duration of an I/O pin’s state
 
-## Duration dur-1 mint
+## Duration dur-1.mint
 - This setup is ideal for measuring the duration of events triggered by hardware signals, such as monitoring the state of an I/O pin.
 - The code sets up Counter 2 in hardware-triggered strobe mode.
 - It loads the maximum count value, preparing the counter to start counting when a hardware trigger is received.
@@ -56,7 +56,7 @@ The 8254 PIT can be programmed to operate in various modes:
 - This operation reconstructs the full 16-bit count value,
 - allowing you to know how much time remains until the counter reaches zero.
 
-## Interval int-1 mint
+## Interval int-1.mint
 - This sequence of functions sets up Counter 0 for precise timing operations and allows for monitoring its countdown in real-time.
 - **`:A`** configures Counter 0 in one-shot mode with binary counting.
 - **`:B`** sets a 16-bit count value for Counter 0 by writing the lower and upper bytes separately.
@@ -90,7 +90,7 @@ The 8254 PIT can be programmed to operate in various modes:
 - and combines it with the lower byte to form the full 16-bit count value.
 - This combined value represents the remaining count until the counter reaches zero.
 
-## Read Write mint rw mint
+## Read Write mint rw.mint
 - **`:A` - `:D`** are functions that set up and read Counter 0, configuring it in one-shot and rate generator modes and reading its count value.
 - **`:E` - `:H`** configure Counter 0 specifically for periodic interrupts and read its status.
 - **`:I` - `:L`** focus on Counter 2, setting it up for hardware-triggered strobe mode and measuring duration based on an external event.

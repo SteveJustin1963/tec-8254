@@ -90,6 +90,70 @@ The 8254 PIT can be programmed to operate in various modes:
 - and combines it with the lower byte to form the full 16-bit count value.
 - This combined value represents the remaining count until the counter reaches zero.
 
+## Read Write mint rw mint
+- **`:A` - `:D`** are functions that set up and read Counter 0, configuring it in one-shot and rate generator modes and reading its count value.
+- **`:E` - `:H`** configure Counter 0 specifically for periodic interrupts and read its status.
+- **`:I` - `:L`** focus on Counter 2, setting it up for hardware-triggered strobe mode and measuring duration based on an external event.
+
+
+#### Function `:A`
+- sets up Counter 0 to operate in Mode 1 (one-shot mode) using binary counting.
+- The control word `0x34` is sent to the control register `0x43` to configure Counter 0. 
+- Mode 1 means that the counter will count down to zero once, and upon reaching zero, it generates a pulse.
+
+#### Function `:B`
+- writes a 16-bit count value into Counter 0.
+- The function first writes the lower byte of the count value to Counter 0’s data port `0x40`.
+- Then it writes the upper byte of the count value (shifted by 8 bits) to the same port.
+- This ensures the full count value is properly loaded into Counter 0.
+
+#### Function `:C`
+- initializes Counter 0 and sets a specific count value.
+- It calls `:A` to configure Counter 0 in one-shot mode.
+- It then sets the count value to `65535` by calling `:B`, initializing Counter 0 to start counting down from this value when triggered.
+
+#### Function `:D`
+- reads the current value of Counter 0.
+- It reads the lower byte of the counter value from the data port `0x40`.
+- Then it reads the upper byte, shifts it left by 8 bits, and combines it with the lower byte to reconstruct the full 16-bit count value.
+
+#### Function `:E`
+- sets up Counter 0 to operate in Mode 2 (rate generator mode) using binary counting.
+- The control word `0x36` is sent to the control register `0x43` to configure Counter 0 for generating a periodic square wave.
+
+#### Function `:F`
+- sets a frequency count value for Counter 0 in rate generator mode.
+- It writes the lower byte of the frequency count value to the data port `0x40`.
+- Then it writes the upper byte of the frequency count value (shifted by 8 bits) to the same port.
+
+#### Function `:G`
+- initializes Counter 0 for rate generation.
+- It calls `:E` to set up Counter 0 in rate generator mode.
+- It then sets the frequency count value to `65535` by calling `:F`, configuring Counter 0 to generate periodic interrupts at this frequency.
+
+#### Function `:H`
+- reads the status of Counter 0.
+- It reads the current state of Counter 0 from the data port `0x40`. This allows monitoring of the counter’s state, useful for checking if it is functioning as expected.
+
+#### Function `:I`
+- sets up Counter 2 to operate in Mode 5 (hardware-triggered strobe) using binary counting.
+- The control word `0x38` is sent to the control register `0x43` to configure Counter 2.
+- Mode 5 uses a hardware trigger to start the countdown, and when it reaches zero, it generates a pulse.
+
+#### Function `:J`
+- sets a maximum count value for Counter 2.
+- It writes the lower byte of the maximum count value (`0xFF`) to Counter 2’s data port `0x42`.
+- Then it writes the upper byte of the maximum count value (`0xFF`) to the same port, ensuring that the full count value is loaded.
+
+#### Function `:K`
+- initializes Counter 2 for duration measurement.
+- It calls `:I` to set up Counter 2 in hardware-triggered strobe mode.
+- It then sets the maximum count value using function `:J`, preparing Counter 2 for measurement.
+
+#### Function `:L`
+- reads the current value of Counter 2.
+- It reads the lower byte of Counter 2’s value from the data port `0x42`.
+- Then it reads the upper byte, shifts it left by 8 bits, and combines it with the lower byte to form the full 16-bit count value, allowing the duration measurement to be observed.
 
 
 

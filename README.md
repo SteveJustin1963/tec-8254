@@ -21,31 +21,7 @@ The 8254 PIT can be programmed to operate in various modes:
 - Producing periodic interrupts
 - Measuring the duration of an I/O pin’s state
 
-### Example Tasks and Forth-83 Code Implementations
 
-#### 1. Measure Interval Period on an I/O Pin (Example Task)
-To measure the interval period of an I/O pin using Counter 0:
-- **Initialize the PIT**:
-  - Set up Counter 0 in the desired mode (e.g., Mode 1 for a one-shot timer).
-  - Connect the clock source and I/O pin (pin 04) as specified.
-- **Start the Measurement**:
-  - Enable Counter 0 and monitor the output pin (OUT 0).
-  - When the measurement is complete, read the counter value.
-
-### Read-1 mint
-### Interrupt int-1 mint
-### Measure Duration
-To measure the duration for which an I/O pin remains high or low:
-- **Configure the PIT**: Set up a counter (e.g., Counter 2) in a suitable mode (Mode 5) to use the gate input.
-- **Connect the I/O Pin**: Connect the pin to the gate input of Counter 2.
-- **Start the Measurement**: Monitor the gate and read the counter value.
-
-#### dur-1 mint
-
-### Additional Notes
-- The `outb` and `inb` words represent output and input operations to hardware ports. Adjust these based on your Forth environment's syntax and hardware specifics.
-- Ensure the I/O pin configuration matches the hardware setup. The 8254 PIT uses gate inputs to control counting, so make sure the appropriate pin is connected.
-- The counter values and control words should be configured based on the operating mode and the function you intend to implement (e.g., generating an interrupt or measuring a duration).
 
 ### References for Further Reading
 - [OSDev Wiki - Programmable Interval Timer](https://wiki.osdev.org/Programmable_Interval_Timer)

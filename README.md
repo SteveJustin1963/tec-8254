@@ -3,7 +3,35 @@
 
 The 8254 Programmable Interval Timer (PIT) is a widely used integrated circuit in the field of computer hardware and embedded systems. It was originally manufactured by Intel and has been a key component in many computer systems for decades. The 8254 PIT is primarily used for generating accurate time delays, generating periodic interrupts, and performing various timing and counting functions.
 
-Here's a detailed overview of the 8254 PIT and its functionalities:
+### https://www.geeksforgeeks.org/microprocessor-8254-programmable-interval-timer/
+- 8254 is a device designed to solve the timing control problems in a microprocessor.
+- It has 3 independent counters, each capable of handling clock inputs up to 10 MHz, and size of each counter is 16 bit.
+- It operates in +5V regulated power supply and has 24 pin signals.
+- All modes are software programmable.
+- The 8254 is an advanced version of 8253 which did not offered the feature of read back command.
+- The basic block diagram of 8254 is: 
+
+![image](https://github.com/user-attachments/assets/2329a602-7cae-4d66-9a3e-86ed23fe684d)
+
+![image](https://github.com/user-attachments/assets/731cd87b-5420-43d4-b3c6-bc65f6406838)
+
+- It has 3 counters each with two inputs (Clock and Gate) and one output.
+- Gate is used to enable or disable counting.
+- When any value of count is loaded and value of gate is set(1),
+- after every step value of count is decremented by 1 until it becomes zero.
+- Depending upon the value of CS, A1, and A0 we can determine the addresses of the selected counter. 
+
+![image](https://github.com/user-attachments/assets/da192cf4-36e0-43af-8c9f-222dac8581e6)
+
+Applications  
+- To generate an accurate time delay
+- As an event counter
+- Square wave generator
+- Rate generator
+- Digital one shot 
+
+
+### detailed overview of the 8254 PIT and its functionalities:
 
 **1. Three Independent Counters:** The 8254 PIT features three independent 16-bit counters, known as Counter 0, Counter 1, and Counter 2. These counters can operate in a variety of modes to suit different timing requirements.
 
@@ -53,6 +81,9 @@ It's worth noting that while the 8254 PIT has been a staple in older computer sy
 
 6. Read the measurement result:
    - Read the count value from Counter 0, which represents the interval period.
+
+ ### code
+ 
  ### read-1.f
 
 This code initializes the 8254 chip, starts the measurement, waits for it to complete, and then reads and displays the measurement result. You'll need to connect the clock source and I/O pin 04 as specified in your hardware setup.

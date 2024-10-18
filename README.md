@@ -31,7 +31,7 @@ Applications
 - Digital one shot 
 
 
-### detailed overview of the 8254 PIT and its functionalities:
+### detailed
 
 **1. Three Independent Counters:** The 8254 PIT features three independent 16-bit counters, known as Counter 0, Counter 1, and Counter 2. These counters can operate in a variety of modes to suit different timing requirements.
 

@@ -90,7 +90,7 @@ The 8254 PIT can be programmed to operate in various modes:
 - and combines it with the lower byte to form the full 16-bit count value.
 - This combined value represents the remaining count until the counter reaches zero.
 
-## Read Write mint rw.mint
+## Read Write mint rw-1.mint
 - **`:A` - `:D`** are functions that set up and read Counter 0, configuring it in one-shot and rate generator modes and reading its count value.
 - **`:E` - `:H`** configure Counter 0 specifically for periodic interrupts and read its status.
 - **`:I` - `:L`** focus on Counter 2, setting it up for hardware-triggered strobe mode and measuring duration based on an external event.

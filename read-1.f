@@ -1,72 +1,43 @@
- 
+:A
+  0x34 0x43 /O ;       // Set control word for Counter 0 in Mode 1 (one-shot mode), binary format
 
-1. Initialize the 8254 chip:
-   - Set the appropriate control word to select Counter 0.
-   - Configure Counter 0 as a one-shot timer with a 16-bit binary count mode.
+:B
+  % 0x40 /O            // Write the lower byte of the count value to Counter 0
+  % 8 / 0x40 /O ;      // Write the upper byte of the count value to Counter 0
 
-2. Set up the clock source for Counter 0:
-   - Connect the clock input (CLK 0) to the external clock source or another appropriate clock signal.
+:C
+  A                    // Call function A to initialize Counter 0
+  65535 B ;            // Set the counter value (65535) using function B
 
-3. Configure the Gate input:
-   - Connect the Gate input (GATE 0) to I/O pin 04.
+:D
+  0x40 /I              // Read the lower byte of Counter 0
+  0x40 /I 8 * + ;      // Read the upper byte, shift it left by 8 bits, and combine with the lower byte
 
-4. Start the measurement:
-   - Enable Counter 0 by setting the appropriate control word.
+:E
+  0x36 0x43 /O ;       // Set control word for Counter 0 in Mode 2 (Rate Generator), binary format
 
-5. Wait for the measurement to complete:
-   - Monitor the status of the Counter 0 output (OUT 0).
-   - When OUT 0 goes high, the measurement has completed.
+:F
+  % 0x40 /O            // Write the lower byte of the frequency count to Counter 0
+  % 8 / 0x40 /O ;      // Write the upper byte of the frequency count to Counter 0
 
-6. Read the measurement result:
-   - Read the count value from Counter 0, which represents the interval period.
+:G
+  E                    // Call function E to initialize Counter 0 for rate generation
+  65535 F ;            // Set the frequency count (65535) using function F
 
-Here's a Forth-83 code snippet to accomplish this:
+:H
+  0x40 /I ;            // Read the status of Counter 0
 
-```forth
-\ Constants for 8254 control words
-\ Control word for Counter 0: 16-bit binary, one-shot mode
-16 CONSTANT CONTROL_WORD_C0
-CONTROL_WORD_C0 CONSTANT CONTROL_WORD_ADDRESS
+:I
+  0x38 0x43 /O ;       // Set control word for Counter 2 in Mode 5 (Hardware Triggered Strobe), binary format
 
-\ Port addresses
-27 CONSTANT PORT_ADDRESS
+:J
+  0xFF 0x42 /O         // Write the maximum count value (lower byte) to Counter 2
+  0xFF 0x42 /O ;       // Write the maximum count value (upper byte) to Counter 2
 
-\ Function to write a value to a port
-: OUT PORT_ADDRESS OUT ! ;
+:K
+  I                    // Call function I to initialize Counter 2 for duration measurement
+  J ;                  // Set the maximum count value using function J
 
-\ Function to set the control word for Counter 0
-: INIT_8254
-  CONTROL_WORD_ADDRESS CONTROL_WORD_C0 OUT
-;
-
-\ Function to start the measurement
-: START_MEASUREMENT
-  \ Connect the clock input (CLK 0) to your desired clock source
-  \ Configure the Gate input (GATE 0) to I/O pin 04
-  \ Enable Counter 0 using the CONTROL_WORD_C0
-  INIT_8254
-;
-
-\ Function to wait for measurement completion
-: WAIT_FOR_MEASUREMENT
-  BEGIN
-    \ Check the status of the Counter 0 output (OUT 0)
-    PORT_ADDRESS IN @ 1 AND 0= IF
-      EXIT
-    THEN
-  AGAIN
-;
-
-\ Function to read the measurement result
-: READ_MEASUREMENT
-  \ Read the count value from Counter 0
-  CONTROL_WORD_ADDRESS 1 + PORT_ADDRESS IN @
-;
-
-\ Main program
-START_MEASUREMENT
-WAIT_FOR_MEASUREMENT
-READ_MEASUREMENT .
-```
-
-This code initializes the 8254 chip, starts the measurement, waits for it to complete, and then reads and displays the measurement result. You'll need to connect the clock source and I/O pin 04 as specified in your hardware setup.
+:L
+  0x42 /I              // Read the lower byte of Counter 2
+  0x42 /I 8 * + ;      // Read the upper byte, shift it left by 8 bits, and combine with the lower byte

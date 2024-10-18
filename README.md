@@ -56,7 +56,41 @@ The 8254 PIT can be programmed to operate in various modes:
 - This operation reconstructs the full 16-bit count value,
 - allowing you to know how much time remains until the counter reaches zero.
 
-## 
+## Interval int-1 mint
+- This sequence of functions sets up Counter 0 for precise timing operations and allows for monitoring its countdown in real-time.
+- **`:A`** configures Counter 0 in one-shot mode with binary counting.
+- **`:B`** sets a 16-bit count value for Counter 0 by writing the lower and upper bytes separately.
+- **`:C`** initializes Counter 0 and sets the count value, preparing it for countdown.
+- **`:D`** reads and combines the lower and upper bytes of the current count value to provide the full 16-bit value.
+
+#### Function `:A`
+- sets the control word for Counter 0 in Mode 1 (one-shot mode) with binary counting. 
+- The control word is sent to the control register of the 8254 PIT using the command `" 52 67 /O`. 
+- Mode 1 (one-shot mode) means that once the counter is started, it counts down to zero, and when it reaches zero, it triggers an output pulse.
+
+#### Function `:B`
+- sets the count value for Counter 0.
+- The count value is divided into two parts:
+1. The lower byte of the count value is written first to Counter 0’s data register (`" 64 /O`).
+2. The upper byte of the count value is then written after shifting it appropriately (`" 8 / 64 /O`).
+- This ensures the 16-bit value is properly loaded into Counter 0,
+- allowing it to count down accurately from the set value.
+
+#### Function `:C`
+- initializes and starts Counter 0 for its measurement task:
+- It calls `:A` to configure Counter 0 with the appropriate mode and settings.
+- It sets a specific count value (65535) by calling `:B`,
+- loading the count value into the counter.
+- This count value determines how long Counter 0 will count before it reaches zero and generates an output.
+
+#### Function `:D`
+- reads the current count value from Counter 0:
+- It reads the lower byte of the count value from Counter 0’s data register.
+- It then reads the upper byte, shifts it left by 8 bits to align it correctly,
+- and combines it with the lower byte to form the full 16-bit count value.
+- This combined value represents the remaining count until the counter reaches zero.
+
+
 
 
 ### References for Further Reading
